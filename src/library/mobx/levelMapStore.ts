@@ -1,7 +1,7 @@
-import {observable, action} from 'mobx';
-import {Pack} from '@library/models/pack';
-import {getNextIncompleteLevelIdForPack} from '@library/helpers/levelHelper';
-import {LevelProgress} from '@library/models/level';
+import { observable, action } from 'mobx';
+import { Pack } from '@library/models/pack';
+import { getNextIncompleteLevelIdForPack } from '@library/helpers/levelHelper';
+import { LevelProgress } from '@library/models/level';
 
 export default class LevelMapStore {
   @observable public currentLevelForPack: Map<string, number>;
@@ -25,6 +25,7 @@ export default class LevelMapStore {
       nextLevel = currentLevel! + 1;
     }
     this.currentLevelForPack.set(pack.id, nextLevel);
+    console.log(pack);
   };
 
   @action
@@ -44,8 +45,8 @@ export default class LevelMapStore {
     levelsProgress: LevelProgress[],
     pack: Pack,
   ) => {
-    const {idx} = getNextIncompleteLevelIdForPack({
-      currentLevelIdx: this.currentLevelForPack.get(pack.id),
+    const { idx } = getNextIncompleteLevelIdForPack({
+      currentLevelIdx: this.currentLevelForPack.get(pack.id) || 0,
       levelsProgress,
       pack,
     });

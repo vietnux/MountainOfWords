@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {observer, inject} from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
-import {Level} from '@library/models/level';
-import {Pack} from '@library/models/pack';
+import { Level } from '@library/models/level';
+import { Pack } from '@library/models/pack';
 
-import {Colors} from '@res/R';
-import {styles} from './game.style';
+import { Colors } from '@res/R';
+import { styles } from './game.style';
 const gameConfig = require('@assets/gameConfig');
 
 import NoNotchView from '@library/components/common/noNotchView';
@@ -21,18 +21,18 @@ import LettersBar, {
   LettersBarElement,
 } from '@library/components/game/lettersBar';
 import Popup from '@library/components/common/popup';
-import {AvailableLetterType} from '@library/models/availableLetter';
-import {SolutionLetterType} from '@library/models/solutionLetter';
+import { AvailableLetterType } from '@library/models/availableLetter';
+import { SolutionLetterType } from '@library/models/solutionLetter';
 
 import LivesIndicator from '@library/components/game/livesIndicator';
 
 import LevelService from '@library/services/levelService';
-import {getLevelProgress} from '@library/helpers/levelHelper';
+import { getLevelProgress } from '@library/helpers/levelHelper';
 import {
   handleAvailableLetterHasTapped,
   handleSolutionLetterHasTapped,
 } from '@library/helpers/gameHelper';
-import {checkIfEnoughCoins} from '@library/helpers/coinHelper';
+import { checkIfEnoughCoins } from '@library/helpers/coinHelper';
 
 import {
   handleOnAskFriendPress,
@@ -43,7 +43,7 @@ import {
 import LevelProgressStore from '@library/mobx/levelProgressStore';
 import UserStore from '@library/mobx/userStore';
 import LevelMapStore from '@library/mobx/levelMapStore';
-import {strings} from '@library/services/i18nService';
+import { strings } from '@library/services/i18nService';
 import delayPromise from '@library/utils/delayPromise';
 
 type Props = {
@@ -104,7 +104,8 @@ export default class Game extends Component<Props, State> {
     this.popupCancel = this.popupCancel.bind(this);
     this.popupConfirm = this.popupConfirm.bind(this);
 
-    const {currentLevel, levels, packId} = this.props.route.params;
+    const { currentLevel, levels, packId } = this.props.route.params;
+
     this.level = levels[currentLevel];
     this.pack = LevelService.getPackWithId(packId);
     this.currentLevel = currentLevel;
@@ -112,7 +113,7 @@ export default class Game extends Component<Props, State> {
   }
 
   onLevelComplete() {
-    const {level, pack} = this;
+    const { level, pack } = this;
 
     this.props.navigation.navigate('LevelComplete', {
       level,
@@ -121,7 +122,7 @@ export default class Game extends Component<Props, State> {
   }
 
   onNoLives() {
-    const {level, pack} = this;
+    const { level, pack } = this;
 
     this.props.navigation.navigate('NoLives', {
       level,
@@ -139,7 +140,7 @@ export default class Game extends Component<Props, State> {
       onLevelComplete,
       onNoLives,
     } = this;
-    const {levelProgressStore} = this.props;
+    const { levelProgressStore } = this.props;
 
     handleAvailableLetterHasTapped({
       letter,
@@ -155,7 +156,7 @@ export default class Game extends Component<Props, State> {
   }
 
   async solutionLetterHasTapped(letter: SolutionLetterType) {
-    const {solutionBar, lettersBar} = this;
+    const { solutionBar, lettersBar } = this;
 
     handleSolutionLetterHasTapped({
       letter,
@@ -230,7 +231,7 @@ export default class Game extends Component<Props, State> {
   }
 
   hidePopup() {
-    this.setState({...this.state, showPopup: false});
+    this.setState({ ...this.state, showPopup: false });
     this.popup.animate('fadeOut', 300);
   }
 
@@ -244,11 +245,11 @@ export default class Game extends Component<Props, State> {
       onLevelComplete,
       onNoLives,
     } = this;
-    const {levelProgressStore} = this.props;
+    const { levelProgressStore } = this.props;
 
     switch (mode) {
       case 'solveLetter': {
-        const {userStore} = this.props;
+        const { userStore } = this.props;
 
         if (
           !checkIfEnoughCoins({
@@ -256,7 +257,7 @@ export default class Game extends Component<Props, State> {
             amount: gameConfig.priceSolveLetter,
           })
         ) {
-          this.props.navigation.navigate('AddCoins', {noCoins: true});
+          this.props.navigation.navigate('AddCoins', { noCoins: true });
           return;
         }
 
@@ -277,7 +278,7 @@ export default class Game extends Component<Props, State> {
         break;
       }
       case 'destroyLetters': {
-        const {userStore} = this.props;
+        const { userStore } = this.props;
 
         if (
           !checkIfEnoughCoins({
@@ -285,13 +286,13 @@ export default class Game extends Component<Props, State> {
             amount: gameConfig.priceDestroyLetters,
           })
         ) {
-          this.props.navigation.navigate('AddCoins', {noCoins: true});
+          this.props.navigation.navigate('AddCoins', { noCoins: true });
           return;
         }
 
         this.hidePopup();
         await delayPromise(500);
-        handleOnDestroyLettersPress({solutionBar, lettersBar, userStore});
+        handleOnDestroyLettersPress({ solutionBar, lettersBar, userStore });
         break;
       }
 
@@ -316,7 +317,7 @@ export default class Game extends Component<Props, State> {
             style={styles.navBar}
             onBackPress={this.props.navigation.goBack}
             onCoinsTap={() => {
-              this.props.navigation.navigate('AddCoins', {noCoins: false});
+              this.props.navigation.navigate('AddCoins', { noCoins: false });
             }}
             coins={this.props.userStore.coins}
             lives={

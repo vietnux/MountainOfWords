@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {Fonts} from '@res/R';
-import {Level} from '@library/models/level';
+import React, { Component } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { Fonts } from '@res/R';
+import { Level } from '@library/models/level';
 
-import {strings} from '@library/services/i18nService';
-import PhotoFrame, {PhotoFrameSize} from '@library/components/photo/photoFrame';
+import { strings } from '@library/services/i18nService';
+import PhotoFrame, { PhotoFrameSize } from '@library/components/photo/photoFrame';
 
-import {wp, hp} from '@library/services/deviceService';
+import { wp, hp } from '@library/services/deviceService';
 
 type Props = {
   style: any;

@@ -2,9 +2,11 @@
  * @format
  * @flow strict-local
  */
-import {StyleSheet} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
-import {wp, hp, isTablet} from '@library/services/deviceService';
+import { wp, hp, isTablet } from '@library/services/deviceService';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const logoImageK = 0.706896551724138;
 
@@ -19,7 +21,8 @@ const getStyles = () => {
       zIndex: 2,
       position: 'absolute',
       width: wp('100%'),
-      height: hp('100%'),
+      height: '100%',//hp('100%')
+      resizeMode: 'cover'
     },
     container: {
       flex: 1,
@@ -83,4 +86,4 @@ const getStyles = () => {
 
 const styles = getStyles();
 
-export {styles};
+export { styles };

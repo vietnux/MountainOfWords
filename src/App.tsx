@@ -14,6 +14,7 @@ import NoLives from '@screens/game/noLives';
 import AddCoins from '@screens/game/addCoins';
 
 import stores from '@library/mobx/store';
+import { LogBox } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,15 @@ export default class App extends Component {
     if (!__DEV__) {
       // Bugsnag.start();
     }
+    LogBox.ignoreLogs([
+      'Require cycle:',
+      'Require cycle: node_modules\\rn-fetch-blob\\index.js ...',
+      'TRenderEngineProvider ...',
+      'You seem to update the renderersProps prop(s) ...',
+      'You seem to update props of the "TRenderEngineProvider" ...',
+      'Possible Unhandled Promise Rejection (id:',
+      'ViewPropTypes will be removed from React Native. ...',
+    ]);
   }
 
   render() {

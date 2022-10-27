@@ -1,22 +1,22 @@
-import React, {Component} from 'react';
-import {ImageBackground, View, Image} from 'react-native';
-import {styles} from './home.style';
+import React, { Component } from 'react';
+import { ImageBackground, View, Image } from 'react-native';
+import { styles } from './home.style';
 import * as Progress from 'react-native-progress';
-import {View as AnimatableView} from 'react-native-animatable';
+import { View as AnimatableView } from 'react-native-animatable';
 
-import R, {Images} from '@res/R';
+import R, { Images } from '@res/R';
 import LevelProgressStore from '@library/mobx/levelProgressStore';
 import UserStore from '@library/mobx/userStore';
-import {observer, inject} from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import SyncService from '@library/services/syncService';
 // @ts-ignore
 import TouchableScale from 'react-native-touchable-scale';
 
-import {wp, isTablet} from '@library/services/deviceService';
+import { wp, isTablet } from '@library/services/deviceService';
 import NoNotchView from '@library/components/common/noNotchView';
 import Navbar from '@library/components/home/navbar';
 import OptionButton from '@library/components/home/optionButton';
-import {strings} from '@library/services/i18nService';
+import { strings } from '@library/services/i18nService';
 import delayPromise from '@library/utils/delayPromise';
 
 type Props = {
@@ -45,7 +45,7 @@ export default class Splash extends Component<Props, State> {
       this.props.levelProgressStore,
       this.props.userStore,
       (progress: number) => {
-        this.setState({...this.state, downloadProgress: progress});
+        this.setState({ ...this.state, downloadProgress: progress });
       },
     ).then(async () => {
       await delayPromise(500);
@@ -57,9 +57,7 @@ export default class Splash extends Component<Props, State> {
 
   render() {
     return (
-      <ImageBackground
-        source={R.img(Images.mountain_bg)}
-        style={styles.background}>
+      <ImageBackground source={R.img(Images.mountain_bg)} style={styles.background}>
         <NoNotchView>
           <AnimatableView
             useNativeDriver
@@ -71,7 +69,7 @@ export default class Splash extends Component<Props, State> {
               <Navbar
                 style={styles.navBar}
                 onCoinsTap={() => {
-                  this.props.navigation.navigate('AddCoins', {noCoins: false});
+                  this.props.navigation.navigate('AddCoins', { noCoins: false });
                 }}
                 coins={this.props.userStore.coins}
               />

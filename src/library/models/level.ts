@@ -1,6 +1,6 @@
-import {LatLng} from 'react-native-maps';
-import {AvailableLetterType} from '@library/models/availableLetter';
-import {SolutionLetterType} from '@library/models/solutionLetter';
+import { LatLng } from 'react-native-maps';
+import { AvailableLetterType } from '@library/models/availableLetter';
+import { SolutionLetterType } from '@library/models/solutionLetter';
 
 export type LevelSource = {
   id: string;
@@ -8,6 +8,7 @@ export type LevelSource = {
   title: string;
   latlon: string;
   sourcePhoto: string;
+  urlPhoto?: string;
   wikipediaExcerpt: string;
   wikipediaLink: string;
   type: string;
@@ -19,6 +20,7 @@ export type Level = {
   title: string;
   latlon: LatLng;
   sourcePhoto: string;
+  urlPhoto?: string;
   wikipediaExcerpt: string;
   wikipediaLink: string;
   type: string;

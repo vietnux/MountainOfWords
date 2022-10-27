@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
-import {View} from 'react-native';
-import {observer, inject} from 'mobx-react';
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { observer, inject } from 'mobx-react';
 
-import {styles} from './levelMap.style';
+import { styles } from './levelMap.style';
 const gameConfig = require('@assets/gameConfig');
 
-import {Level} from '@library/models/level';
-import {Pack} from '@library/models/pack';
+import { Level } from '@library/models/level';
+import { Pack } from '@library/models/pack';
 
-import {Images} from '@res/R';
-import {strings} from '@library/services/i18nService';
+import { Images } from '@res/R';
+import { strings } from '@library/services/i18nService';
 
 import LevelService from '@library/services/levelService';
 import delayPromise from '@library/utils/delayPromise';
@@ -34,12 +34,12 @@ import {
   getProgressForPack,
   getLevelProgress,
 } from '@library/helpers/levelHelper';
-import {checkIfEnoughCoins} from '@library/helpers/coinHelper';
+import { checkIfEnoughCoins } from '@library/helpers/coinHelper';
 
 import LevelProgressStore from '@library/mobx/levelProgressStore';
 import LevelMapStore from '@library/mobx/levelMapStore';
 import UserStore from '@library/mobx/userStore';
-import {MapTypeMode} from '@library/models/mapTypeMode';
+import { MapTypeMode } from '@library/models/mapTypeMode';
 
 type State = {
   mapNavigationMode: boolean;
@@ -78,7 +78,6 @@ export default class LevelMap extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-
     this.onMapPanDrag = this.onMapPanDrag.bind(this);
     this.mapLoaded = this.mapLoaded.bind(this);
     this.getCurrentLevel = this.getCurrentLevel.bind(this);
@@ -90,13 +89,12 @@ export default class LevelMap extends Component<Props, State> {
     this.restoreLives = this.restoreLives.bind(this);
     this.showPopup = this.showPopup.bind(this);
     this.onMarkerPress = this.onMarkerPress.bind(this);
-
-    const {packId} = this.props.route.params;
+    const { packId } = this.props.route.params;
     this.packId = packId;
     this.pack = LevelService.getPackWithId(this.packId);
     this.levels = LevelService.getLevelsForPack(packId);
 
-    const {idx} = getFirstIncompleteLevel({
+    const { idx } = getFirstIncompleteLevel({
       pack: this.pack,
       levelsProgress: this.props.levelProgressStore.levelsProgress,
       levels: this.levels,
@@ -109,6 +107,12 @@ export default class LevelMap extends Component<Props, State> {
       showPopup: false,
       popupAmount: 0,
     };
+
+  }
+  componentDidMount(): void {
+
+
+
   }
 
   mapLoaded() {
@@ -147,7 +151,7 @@ export default class LevelMap extends Component<Props, State> {
       this.props.levelMapStore.currentLevelForPack.get(this.packId)!
     ].id;
 
-    const {levelProgress} = getLevelProgress(
+    const { levelProgress } = getLevelProgress(
       this.props.levelProgressStore.levelsProgress,
       currentLevelId,
       this.packId,
@@ -202,21 +206,21 @@ export default class LevelMap extends Component<Props, State> {
   }
 
   async popupConfirm() {
-    const {userStore} = this.props;
+    const { userStore } = this.props;
 
-    if (!checkIfEnoughCoins({userStore, amount: gameConfig.priceSolveLetter})) {
-      this.props.navigation.navigate('AddCoins', {noCoins: true});
+    if (!checkIfEnoughCoins({ userStore, amount: gameConfig.priceSolveLetter })) {
+      this.props.navigation.navigate('AddCoins', { noCoins: true });
       return;
     }
 
-    this.setState({showPopup: false});
+    this.setState({ showPopup: false });
     this.popup.animate('fadeOut', 300);
     await delayPromise(300);
     this.restoreLives();
   }
 
   popupCancel() {
-    this.setState({showPopup: false});
+    this.setState({ showPopup: false });
     this.popup.animate('fadeOut', 300);
   }
 
@@ -238,7 +242,7 @@ export default class LevelMap extends Component<Props, State> {
     const currentLevelId = this.levels[
       this.props.levelMapStore.currentLevelForPack.get(this.packId)!
     ].id;
-    const {levelProgress} = getLevelProgress(
+    const { levelProgress } = getLevelProgress(
       this.props.levelProgressStore.levelsProgress,
       currentLevelId,
       this.packId,
@@ -275,7 +279,7 @@ export default class LevelMap extends Component<Props, State> {
               this.props.navigation.goBack();
             }}
             onCoinTap={() => {
-              this.props.navigation.navigate('AddCoins', {noCoins: false});
+              this.props.navigation.navigate('AddCoins', { noCoins: false });
             }}
             pointerEvents={this.state.mapNavigationMode ? 'none' : 'auto'}
           />
@@ -365,9 +369,15 @@ export default class LevelMap extends Component<Props, State> {
             pointerEvents={this.state.mapNavigationMode ? 'none' : 'auto'}
             onNextLevel={() => {
               this.props.levelMapStore.nextLevelForPack(this.pack);
+              this.packId = `${parseInt(this.pack.id) + 1}`;
+              this.pack = LevelService.getPackWithId(this.packId);
+              this.levels = LevelService.getLevelsForPack(this.packId);
             }}
             onPrevLevel={() => {
               this.props.levelMapStore.prevLevelForPack(this.pack);
+              this.packId = `${parseInt(this.pack.id) - 1}`;
+              this.pack = LevelService.getPackWithId(this.packId);
+              this.levels = LevelService.getLevelsForPack(this.packId);
             }}
           />
         </View>

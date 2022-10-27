@@ -1,10 +1,13 @@
-import {LatLng} from 'react-native-maps';
+import { LatLng } from 'react-native-maps';
 import WordHelper from '../helpers/wordHelper';
-import {Level, LevelSource} from '@library/models/level';
-import {Pack} from '@library/models/pack';
+import { Level, LevelSource } from '@library/models/level';
+import { Pack } from '@library/models/pack';
 
-const levelSource = require('@assets/levels');
-const packSource = require('@assets/packs');
+// const levelSource = require('@assets/levels');
+// const packSource = require('@assets/packs');
+
+const levelSource = require('@assets/levels_vi');
+const packSource = require('@assets/packs_vi');
 
 const getCoordinateFromLatLonString = (latLonString: string): LatLng => {
   const splitted = latLonString.split(',');
@@ -30,6 +33,7 @@ const LevelService: LevelServiceType = {
       title: lvl.title,
       latlon: getCoordinateFromLatLonString(lvl.latlon),
       sourcePhoto: lvl.sourcePhoto,
+      urlPhoto: lvl.urlPhoto,
       wikipediaExcerpt: lvl.wikipediaExcerpt,
       wikipediaLink: lvl.wikipediaLink,
       type: lvl.type,

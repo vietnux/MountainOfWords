@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {ImageBackground, StyleSheet, Text} from 'react-native';
+import React, { Component } from 'react';
+import { ImageBackground, StyleSheet, Text } from 'react-native';
 
-import {hp} from '@library/services/deviceService';
-import R, {Images, Fonts} from '@res/R';
+import { hp } from '@library/services/deviceService';
+import R, { Images, Fonts } from '@res/R';
 
 type Props = {
   progress: number;
@@ -23,20 +23,20 @@ export default class PackProgress extends Component<Props> {
   }
 
   render() {
-    const {width, height} = getSizeForProgress({
+    const { width, height } = getSizeForProgress({
       progress: this.props.progress,
       width: this.props.width,
       height: this.progressBarHeight,
     });
-    const {styles} = this;
+    const { styles } = this;
     return (
       <ImageBackground
         source={R.img(Images.level_progress_bar)}
         style={styles.progressBar}
-        resizeMode={'contain'}>
+        resizeMode={'cover'}>
         <ImageBackground
           source={R.img(Images.level_progress_unit)}
-          style={Object.assign({width, height}, styles.progressBarUnit)}
+          style={Object.assign({ width, height }, styles.progressBarUnit)}
           resizeMode={'stretch'}>
           <Text style={styles.progressText}>
             {Math.round((this.props.progress + Number.EPSILON) * 10) / 10}
@@ -96,7 +96,7 @@ const getStyles = ({
     },
     progressText: {
       fontFamily: Fonts.league,
-      marginTop: progressBarHeight * 0.01,
+      marginTop: -progressBarHeight * 0.05,
       fontSize: progressBarHeight * 0.45,
       color: 'white',
       textAlign: 'center',

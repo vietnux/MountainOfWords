@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {ImageBackground, StyleSheet, Text} from 'react-native';
-import {View} from 'react-native-animatable';
+import React, { Component } from 'react';
+import { ImageBackground, StyleSheet, Text } from 'react-native';
+import { View } from 'react-native-animatable';
 
-import {isTablet, wp, hp} from '@library/services/deviceService';
+import { isTablet, wp, hp } from '@library/services/deviceService';
 
-import R, {Images, Fonts} from '@res/R';
+import R, { Images, Fonts } from '@res/R';
 import PackProgress from './packProgress';
 
 type Props = {
