@@ -18,6 +18,8 @@ export default class LevelMapStore {
   @action
   nextLevelForPack = (pack: Pack) => {
     let nextLevel: number;
+    // console.log(this.currentLevelForPack);
+    // console.log(this.currentLevelForPack.get(pack.id) + ' === ' + (pack.levels.length! - 1));
     if (this.currentLevelForPack.get(pack.id) === pack.levels.length! - 1) {
       nextLevel = 0;
     } else {
@@ -25,7 +27,8 @@ export default class LevelMapStore {
       nextLevel = currentLevel! + 1;
     }
     this.currentLevelForPack.set(pack.id, nextLevel);
-    console.log(pack);
+    // console.log(pack.id + " :: " + nextLevel);
+    // console.log(pack);
   };
 
   @action

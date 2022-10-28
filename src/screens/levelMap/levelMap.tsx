@@ -45,6 +45,7 @@ type State = {
   mapNavigationMode: boolean;
   showPopup: boolean;
   popupAmount: number;
+  packId: string;
 };
 
 type Props = {
@@ -75,6 +76,12 @@ export default class LevelMap extends Component<Props, State> {
   loadingView: any;
   popup: any;
   mapCreditsText: any;
+  state: State = {
+    mapNavigationMode: false,
+    showPopup: false,
+    popupAmount: 0,
+    packId: ''
+  };
 
   constructor(props: Props) {
     super(props);
@@ -101,31 +108,31 @@ export default class LevelMap extends Component<Props, State> {
     });
     this.props.levelMapStore.setCurrentLevelForPack(idx, this.pack);
     this.prevCurrentLevel = idx;
-
-    this.state = {
-      mapNavigationMode: false,
-      showPopup: false,
-      popupAmount: 0,
-    };
-
   }
   componentDidMount(): void {
+    this.setState({ packId: this.props.route.params });
 
-
-
+  }
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    console.log(error.toString());
   }
 
   mapLoaded() {
     this.loadingView.fadeOut();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
     const actualCurrentLevel = this.props.levelMapStore.currentLevelForPack.get(
-      this.pack.id,
+      this.pack.id
     );
+    // console.log(this.prevCurrentLevel + ' !== ' + actualCurrentLevel);
     if (this.prevCurrentLevel !== actualCurrentLevel) {
+
       this.updateMapLayer();
       this.prevCurrentLevel = actualCurrentLevel!;
+    }
+    if (prevState != this.state) {
+      // console.log(prevState.packId + ' !=!=! ' + this.state.packId);
     }
   }
 
@@ -247,6 +254,7 @@ export default class LevelMap extends Component<Props, State> {
       currentLevelId,
       this.packId,
     );
+    console.log(this.props.levelMapStore);
 
     return (
       <View style={styles.root}>
@@ -369,15 +377,22 @@ export default class LevelMap extends Component<Props, State> {
             pointerEvents={this.state.mapNavigationMode ? 'none' : 'auto'}
             onNextLevel={() => {
               this.props.levelMapStore.nextLevelForPack(this.pack);
-              this.packId = `${parseInt(this.pack.id) + 1}`;
-              this.pack = LevelService.getPackWithId(this.packId);
-              this.levels = LevelService.getLevelsForPack(this.packId);
+              this.setState({ packId: `${parseInt(this.pack.id) + 1}` });
+              // if (parseInt(this.pack.id) < LevelService.levels.length) {
+              //   this.packId = `${parseInt(this.pack.id) + 1}`;
+              //   this.pack = LevelService.getPackWithId(this.packId);
+              //   this.levels = LevelService.getLevelsForPack(this.packId);
+              // }
+
             }}
             onPrevLevel={() => {
               this.props.levelMapStore.prevLevelForPack(this.pack);
-              this.packId = `${parseInt(this.pack.id) - 1}`;
-              this.pack = LevelService.getPackWithId(this.packId);
-              this.levels = LevelService.getLevelsForPack(this.packId);
+              this.setState({ packId: `${parseInt(this.pack.id) - 1}` });
+              // if (parseInt(this.pack.id) > 1) {
+              //   this.packId = `${parseInt(this.pack.id) - 1}`;
+              //   this.pack = LevelService.getPackWithId(this.packId);
+              //   this.levels = LevelService.getLevelsForPack(this.packId);
+              // }
             }}
           />
         </View>

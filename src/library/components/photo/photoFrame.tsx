@@ -34,16 +34,20 @@ export enum PhotoFrameSize {
 const photoFrameConstant = 0.626373626373626;
 const photoFramePicResizeConstant = 0.98;
 
-type State = {
-  modalVisible: boolean;
-};
+// type State = {
+//   modalVisible: boolean;
+// };
 
-export default class PhotoFrame extends Component<Props, State> {
+export default class PhotoFrame extends Component<Props, any> {
   photoFrameWidth: number;
   photoFrameHeight: number;
+  level: any;
+  pic: any;
+  state = { modalVisible: false, pic: {}, level: [] };
 
   constructor(props: Props) {
     super(props);
+    this.level = this.props.level;
 
     if (this.props.size === PhotoFrameSize.small) {
       this.photoFrameWidth = isTablet() ? hp('35%') : wp('68%');
@@ -55,7 +59,26 @@ export default class PhotoFrame extends Component<Props, State> {
           : wp('85%');
     }
     this.photoFrameHeight = this.photoFrameWidth * photoFrameConstant;
-    this.state = { modalVisible: false };
+  }
+  componentDidMount(): void {
+    this.setState({
+      level: this.props.level,
+      pic: {
+        uri:
+          this.props.level.urlPhoto
+      }
+    })
+  }
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<any>, snapshot?: any): void {
+    if (prevProps.level != this.props.level) {
+      // console.log(this.props.level);
+      this.setState({
+        level: this.props.level,
+        pic: {
+          uri: this.props.level.urlPhoto
+        }
+      })
+    }
   }
 
   render() {
@@ -68,10 +91,11 @@ export default class PhotoFrame extends Component<Props, State> {
     //     '@2x.jpg',
     // };
 
-    const pic = {
-      uri:
-        this.props.level.urlPhoto.toString()
-    };
+    // const pic = {
+    //   uri:
+    //     this.props.level.urlPhoto
+    // };
+    // console.log(this.state.pic);
 
     const width = wp('100%');
     const constant = 0.626373626373626;
@@ -79,7 +103,7 @@ export default class PhotoFrame extends Component<Props, State> {
 
     return (
       <View style={this.props.style}>
-        <RemoteImage
+        <Image
           style={Object.assign(
             {
               width: this.photoFrameWidth * photoFramePicResizeConstant,
@@ -87,8 +111,8 @@ export default class PhotoFrame extends Component<Props, State> {
             },
             styles.levelDetailsImagePic,
           )}
-          source={pic}
-          showNativeIndicator={false}
+          source={this.state.pic}
+        // showNativeIndicator={false}
         />
         <TouchableWithoutFeedback
           onPress={() => {
@@ -130,7 +154,7 @@ export default class PhotoFrame extends Component<Props, State> {
               imageHeight={height}>
               <RemoteImage
                 style={{ width, height }}
-                source={pic}
+                source={this.state.pic}
                 showNativeIndicator={true}
               />
             </ImageZoom>

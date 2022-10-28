@@ -1,23 +1,23 @@
-import React, {Component} from 'react';
-import {Image, Text, TouchableOpacity, Linking} from 'react-native';
-import {View} from 'react-native-animatable';
+import React, { Component } from 'react';
+import { Image, Text, TouchableOpacity, Linking } from 'react-native';
+import { View } from 'react-native-animatable';
 
 // @ts-ignore
 import LinearGradient from 'react-native-linear-gradient';
 
 const poiTypes = require('@assets/poiTypes');
 
-import R, {Images, Colors} from '@res/R';
-import {styles} from './levelChooser.style';
+import R, { Images, Colors } from '@res/R';
+import { styles } from './levelChooser.style';
 import CircleButton from '@library/components/button/circleButton';
 import LevelIndexNumber from '../common/levelIndexNumber';
-import {strings} from '@library/services/i18nService';
+import { strings } from '@library/services/i18nService';
 
-import PhotoFrame, {PhotoFrameSize} from '@library/components/photo/photoFrame';
-import {observer, inject} from 'mobx-react';
+import PhotoFrame, { PhotoFrameSize } from '@library/components/photo/photoFrame';
+import { observer, inject } from 'mobx-react';
 
-import {Level, LevelProgress} from '@library/models/level';
-import {getLevelProgress} from '@library/helpers/levelHelper';
+import { Level, LevelProgress } from '@library/models/level';
+import { getLevelProgress } from '@library/helpers/levelHelper';
 
 import LevelProgressStore from '@library/mobx/levelProgressStore';
 import RemoteImageBackground from '@library/components/common/remoteImageBackground';
@@ -34,17 +34,28 @@ type Props = {
 
 @inject('levelProgressStore')
 @observer
-export default class LevelChooser extends Component<Props> {
+export default class LevelChooser extends Component<Props, any> {
   containerView: any;
 
   static defaultProps = {
     hide: false,
   };
+  state = {
+    curLevel: 0
+  }
 
   constructor(props: Props) {
     super(props);
     this.handleWikipediaLink = this.handleWikipediaLink.bind(this);
   }
+  // componentDidMount(): void {
+  //   this.setState({ curLevel: this.props.currentLevel });
+  // }
+  // componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<any>, snapshot?: any): void {
+  //   if (prevState.curLevel != this.props.currentLevel) {
+  //     console.log(111);
+  //   }
+  // }
 
   async handleWikipediaLink() {
     const level = this.props.levels[this.props.currentLevel];
@@ -56,21 +67,23 @@ export default class LevelChooser extends Component<Props> {
 
   completedLevel() {
     const level = this.props.levels[this.props.currentLevel];
-
     const picName = 'level_' + level.id.toString();
-
+    // const pic = {
+    //   uri:
+    //     'https://tegami-mountains-content.s3-eu-west-1.amazonaws.com/' +
+    //     picName +
+    //     '@2x.jpg',
+    // };
     const pic = {
       uri:
-        'https://tegami-mountains-content.s3-eu-west-1.amazonaws.com/' +
-        picName +
-        '@2x.jpg',
+        level.urlPhoto
     };
 
     return (
       <View style={styles.levelDetailsComplete}>
         <RemoteImageBackground
           resizeMode="cover"
-          style={{width: '100%', height: '100%'}}
+          style={{ width: '100%', height: '100%' }}
           source={pic}>
           <LinearGradient
             colors={['#00000099', '#000000dd']}

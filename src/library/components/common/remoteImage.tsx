@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import React, { Component } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import CachedImage from 'react-native-image-cache-wrapper';
 
 type Props = {
@@ -24,7 +24,7 @@ export default class RemoteImage extends Component<Props> {
       <View style={this.props.style}>
         <CachedImage
           resizeMode={this.props.resizeMode}
-          style={{...this.props.style, zIndex: 5}}
+          style={{ ...this.props.style, zIndex: 5 }}
           source={this.props.source}
           children={this.props.children}
           activityIndicator={
@@ -37,7 +37,7 @@ export default class RemoteImage extends Component<Props> {
             ) : null
           }
         />
-        <View style={{...this.props.style, backgroundColor: '#00000099'}}>
+        <View style={{ ...this.props.style, backgroundColor: '#00000099' }}>
           <View style={styles.loadingActivityContainer}>
             <ActivityIndicator size="large" color="#999999" />
           </View>

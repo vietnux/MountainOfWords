@@ -14,46 +14,36 @@
   {
     "id": "2",
     "title": "Tres mils del pirineu",
-    "levels": []
+    "levels": [
+      "84002"
+    ]
   },
   {
     "id": "3",
     "title": "Cims de Catalunya",
-    "levels": []
+    "levels": [
+      "84003"
+    ]
   },
   {
     "id": "4",
     "title": "Cims de l'Himalaya",
-    "levels": []
+    "levels": [
+      "84004"
+    ]
   },
   {
     "id": "5",
     "title": "Muntanyes emblemàtiques del món",
-    "levels": []
+    "levels": [
+      "84005"
+    ]
   },
   {
     "id": "6",
     "title": "Parque Nacional Ordesa y Monte Perdido",
-    "levels": []
-  },
-  {
-    "id": "7",
-    "title": "Parque Nacional Picos de Europa",
-    "levels": []
-  },
-  {
-    "id": "8",
-    "title": "Cims dels Alps",
-    "levels": []
-  },
-  {
-    "id": "9",
-    "title": "Cims de l'Alt Camp",
-    "levels": []
-  },
-  {
-    "id": "10",
-    "title": "Muntanyes de Prades",
-    "levels": []
+    "levels": [
+      "84006"
+    ]
   }
 ]
