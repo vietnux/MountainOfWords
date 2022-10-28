@@ -254,7 +254,7 @@ export default class LevelMap extends Component<Props, State> {
       currentLevelId,
       this.packId,
     );
-    console.log(this.props.levelMapStore);
+    // console.log(this.props.levelMapStore);
 
     return (
       <View style={styles.root}>

@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
-import MapView, {PROVIDER_GOOGLE, UrlTile, MapTypes} from 'react-native-maps';
+import React, { Component } from 'react';
+import MapView, { PROVIDER_GOOGLE, UrlTile, MapTypes } from 'react-native-maps';
 const MapSettings = require('@assets/mapSettings');
 
-import {Level} from '@library/models/level';
+import { Level } from '@library/models/level';
 
-import {styles} from './mapLayer.style';
+import { styles } from './mapLayer.style';
 
 import LevelMarker from './levelMarker';
-import {MapTypeMode} from '@library/models/mapTypeMode';
+import { MapTypeMode } from '@library/models/mapTypeMode';
 
-import {observer, inject} from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import UserStore from '@library/mobx/userStore';
-import {getLevelProgress} from '@library/helpers/levelHelper';
+import { getLevelProgress } from '@library/helpers/levelHelper';
 
 import LevelProgressStore from '@library/mobx/levelProgressStore';
 
@@ -34,8 +34,8 @@ type State = {
 const paddingConstant = 0.99989;
 
 const mapOptionsForMode = new Map<string, any>([
-  [MapTypeMode.Sat, {type: 'satellite', mapStyle: undefined}],
-  [MapTypeMode.Topo, {type: 'standard', mapStyle: MapSettings.mapStyle}],
+  [MapTypeMode.Sat, { type: 'satellite', mapStyle: undefined }],
+  [MapTypeMode.Topo, { type: 'standard', mapStyle: MapSettings.mapStyle }],
 ]);
 
 @inject('userStore')
@@ -54,7 +54,16 @@ export default class MapLayer extends Component<Props, State> {
     this.currentLevel = this.props.initialLevel;
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(this.props.userStore?.mapTypeMode);
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    // this.props.userStore?.mapTypeMode
+    if (this.props.userStore?.mapTypeMode != prevProps.userStore?.mapTypeMode) {
+      console.log(1);
+    }
+  }
 
   async resetToLevel() {
     const camera = await this.map.getCamera();
@@ -64,7 +73,7 @@ export default class MapLayer extends Component<Props, State> {
         this.props.levels[this.currentLevel].latlon.latitude * paddingConstant,
       longitude: this.props.levels[this.currentLevel].latlon.longitude,
     };
-    this.map.animateCamera(camera, {duration: 1000});
+    this.map.animateCamera(camera, { duration: 1000 });
   }
 
   setCurrentLevel(level: number) {
@@ -76,7 +85,7 @@ export default class MapLayer extends Component<Props, State> {
 
     let i = 1;
     this.props.levels.forEach((level: Level) => {
-      const {levelProgress} = getLevelProgress(
+      const { levelProgress } = getLevelProgress(
         this.props.levelProgressStore?.levelsProgress!,
         level.id,
         this.props.packId,
@@ -104,9 +113,7 @@ export default class MapLayer extends Component<Props, State> {
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
-        ref={(ref) => {
-          this.map = ref;
-        }}
+        ref={(ref) => { this.map = ref; }}
         onMarkerPress={(marker) => {
           if (marker === null) {
             return;
@@ -125,10 +132,7 @@ export default class MapLayer extends Component<Props, State> {
           altitude: 1000,
           zoom: 14,
         }}
-        mapType={
-          mapOptionsForMode.get(this.props.userStore?.mapTypeMode!)
-            .type as MapTypes
-        }
+        mapType={mapOptionsForMode.get(this.props.userStore?.mapTypeMode!).type}
         customMapStyle={
           mapOptionsForMode.get(this.props.userStore?.mapTypeMode!).mapStyle
         }
@@ -147,7 +151,7 @@ export default class MapLayer extends Component<Props, State> {
           this.props.onPanDrag();
         }}
         onMapReady={() => {
-          that.setState({mapReady: true});
+          that.setState({ mapReady: true });
           setTimeout(() => {
             this.props.onMapLoaded();
           }, 100);
