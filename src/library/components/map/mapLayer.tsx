@@ -14,6 +14,7 @@ import UserStore from '@library/mobx/userStore';
 import { getLevelProgress } from '@library/helpers/levelHelper';
 
 import LevelProgressStore from '@library/mobx/levelProgressStore';
+import MapTypeButton from './mapTypeButton';
 
 type Props = {
   controlsEnabled: boolean;
@@ -25,6 +26,7 @@ type Props = {
   userStore?: UserStore;
   levelProgressStore?: LevelProgressStore;
   onMarkerPress: Function;
+  mapType: string;
 };
 
 type State = {
@@ -108,7 +110,7 @@ export default class MapLayer extends Component<Props, State> {
   render() {
     const that = this;
     const markers = this.getMarkers();
-
+    console.log(this.props.userStore?.mapTypeMode!);
     return (
       <MapView
         style={styles.map}
@@ -141,15 +143,9 @@ export default class MapLayer extends Component<Props, State> {
         scrollEnabled={true}
         zoomEnabled={this.props.controlsEnabled}
         moveOnMarkerPress={false}
-        onPress={() => {
-          this.props.onPanDrag();
-        }}
-        onDoublePress={() => {
-          this.props.onPanDrag();
-        }}
-        onPanDrag={() => {
-          this.props.onPanDrag();
-        }}
+        onPress={() => { this.props.onPanDrag(); }}
+        onDoublePress={() => { this.props.onPanDrag(); }}
+        onPanDrag={() => { this.props.onPanDrag(); }}
         onMapReady={() => {
           that.setState({ mapReady: true });
           setTimeout(() => {

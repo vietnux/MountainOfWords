@@ -46,6 +46,7 @@ type State = {
   showPopup: boolean;
   popupAmount: number;
   packId: string;
+  mapTypeMode: string;
 };
 
 type Props = {
@@ -80,7 +81,8 @@ export default class LevelMap extends Component<Props, State> {
     mapNavigationMode: false,
     showPopup: false,
     popupAmount: 0,
-    packId: ''
+    packId: '',
+    mapTypeMode: ''
   };
 
   constructor(props: Props) {
@@ -110,7 +112,7 @@ export default class LevelMap extends Component<Props, State> {
     this.prevCurrentLevel = idx;
   }
   componentDidMount(): void {
-    this.setState({ packId: this.props.route.params });
+    this.setState({ packId: this.props.route.params, mapTypeMode: this.props.userStore.mapTypeMode });
 
   }
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
@@ -127,12 +129,11 @@ export default class LevelMap extends Component<Props, State> {
     );
     // console.log(this.prevCurrentLevel + ' !== ' + actualCurrentLevel);
     if (this.prevCurrentLevel !== actualCurrentLevel) {
-
       this.updateMapLayer();
       this.prevCurrentLevel = actualCurrentLevel!;
     }
-    if (prevState != this.state) {
-      // console.log(prevState.packId + ' !=!=! ' + this.state.packId);
+    if (prevState != this.state || prevState.mapTypeMode != this.state.mapTypeMode) {
+      console.log(prevState.packId + ' !=!=! ' + this.state.packId);
     }
   }
 
@@ -270,6 +271,8 @@ export default class LevelMap extends Component<Props, State> {
             onMapLoaded={this.mapLoaded}
             packId={this.packId}
             onMarkerPress={this.onMarkerPress}
+            // userStore={this.props.userStore}
+            mapType={() => this.props.userStore?.mapTypeMode}
           />
 
           <MapboxLogo
@@ -310,6 +313,7 @@ export default class LevelMap extends Component<Props, State> {
             mapMode={this.props.userStore.mapTypeMode}
             onPress={() => {
               this.props.userStore.toggleMapTypeMode();
+              this.setState({ mapTypeMode: this.props.userStore.mapTypeMode });
             }}
           />
 
